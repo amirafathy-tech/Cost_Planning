@@ -1,0 +1,227 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "costplan",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.17.4",
+      "toolsId": "38a19ac7-abf7-4b28-b397-bc88f028447b"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/zapi-sales-quotation-srvsample/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "zbtpService":{
+        "uri": "/odata/v4/zbtp-srvsample/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "ZBTP_POST_QUOT_SRVSampleService":{
+        "uri": "/odata/v4/zbtp-post-quot-srvsample/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "ZAPI_BUSINESS_PARTNERSampleService":{
+        "uri": "/odata/v4/zapi-business-partnersample/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "ZAPI_PRODUCT_SRVSampleService":{
+        "uri": "/odata/v4/zapi-product-srvsample/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "SimulationService":{
+        "uri": "/odata/v4/simulation/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+      
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.135.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.tnt": {},
+        "sap.f": {},
+        "sap.ui.integration": {},
+        "sap.ui.table": {},
+        "sap.fe.macros":{},
+        "sap.ui.layout": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "costplan.i18n.i18n"
+        }
+      },
+      "": {
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "zbtpModel":{
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "zbtpService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "synchronizationMode": "None",
+          "groupId": "$auto"
+        }
+      },
+      "ZBTP_POST_QUOT_SRVSampleService":{
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "ZBTP_POST_QUOT_SRVSampleService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "synchronizationMode": "None",
+          "groupId": "$auto"
+        }
+      },
+      "supplierModel":{
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "ZAPI_BUSINESS_PARTNERSampleService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "synchronizationMode": "None",
+          "groupId": "$auto"
+        }
+      },
+      "productModel":{
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "ZAPI_PRODUCT_SRVSampleService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "synchronizationMode": "None",
+          "groupId": "$auto"
+        }
+      },
+      "simulationModel":{
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "SimulationService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "synchronizationMode": "None",
+          "groupId": "$direct",
+          "updateGroupId": "$direct"  
+        }
+      }
+
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "costplan.view",
+        "async": true,
+        "viewPath": "costplan.view"
+      },
+      "routes": [
+        {
+          "name": "RoutemainPage",
+          "pattern": ":?query:",
+          "target": [
+            "TargetmainPage"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetmainPage": {
+          "id": "mainPage",
+          "name": "mainPage"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "costplan.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

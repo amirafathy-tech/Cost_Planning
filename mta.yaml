@@ -1,0 +1,137 @@
+_schema-version: 3.3.0
+ID: Quot
+description: Quot CAP Project
+version: 1.0.0
+
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+
+modules:
+
+  # ======================
+  # CAP Backend Service
+  # ======================
+  - name: Quot-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+      instances: 1
+    build-parameters:
+      builder: npm-ci
+    requires:
+      - name: Quot-auth
+      - name: Quot-connectivity
+      - name: Quot-destination
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+
+  # ======================
+  # App Router
+  # ======================
+  - name: Quot-approuter
+    type: approuter.nodejs
+    path: app/router
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: Quot-auth
+      - name: srv-api
+      - name: Quot-destination
+      - name: Quot-html5-repo-host
+
+  # ======================
+  # HTML5 App
+  # ======================
+  - name: costplan
+    type: html5
+    path: app/costplan
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+
+  # ======================
+  # HTML5 App Deployer
+  # ======================
+  - name: Quot-app-deployer
+    type: com.sap.application.content
+    path: gen
+    requires:
+      - name: Quot-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: app/
+      requires:
+        - artifacts:
+            - costplan.zip
+          name: costplan
+          target-path: app/
+
+resources:
+
+  # ======================
+  # XSUAA
+  # ======================
+  - name: Quot-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        tenant-mode: dedicated
+        xsappname: Quot-${org}-${space}
+
+  # ======================
+  # Connectivity
+  # ======================
+  - name: Quot-connectivity
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: connectivity
+      service-plan: lite
+
+  # ======================
+  # Destination
+  # ======================
+  - name: Quot-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Name: ui5
+                URL: https://ui5.sap.com
+                ProxyType: Internet
+                Type: HTTP
+                Authentication: NoAuthentication
+            existing_destinations_policy: update
+
+  # ======================
+  # HTML5 Repo Host
+  # ======================
+  - name: Quot-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production

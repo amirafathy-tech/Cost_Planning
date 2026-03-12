@@ -1,0 +1,9 @@
+{
+  "name": "Quot-approuter",
+  "dependencies": {
+      "@sap/approuter": "^20.7.0"
+  },
+  "scripts": {
+    "start": "node node_modules/@sap/approuter/approuter.js"
+  }
+}

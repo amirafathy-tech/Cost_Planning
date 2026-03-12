@@ -1,0 +1,158 @@
+<mvc:View controllerName="costplan.controller.mainPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+      xmlns:sap.m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:w="sap.ui.integration.widgets"
+    xmlns:tnt="sap.tnt"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:table="sap.ui.table"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+        xmlns:m="sap.m"
+        xmlns:u="sap.ui.unified"
+        	xmlns:macros="sap.fe.macros"
+        
+       >
+    <Page id="_IDGenPage1" title="Cost Planning" showNavButton="false" class="sapUiContentPadding">
+        <Panel id="_IDGenPanel1" backgroundDesign="Solid" class="sapUiSmallMargin">
+            <headerToolbar>
+                <Toolbar id="_IDGenToolbar" >
+                    <Title id="_IDGenTitle" text="Cost Planning" level="H3"></Title>
+                </Toolbar>
+            </headerToolbar>
+        <content>
+            <form:SimpleForm id="_IDGenSimpleForm" editable="true" layout="ResponsiveGridLayout" labelSpanL="4" labelSpanM="4"
+                            emptySpanL="0" emptySpanM="0" columnsL="1" columnsM="1" > 
+                <form:content>
+                    <Label id="_IDGenLabel" text="Quotation Number" required="true" design="Bold"/>
+                    <Input id="quotationInput" showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                           placeholder="Enter or select quotation number"
+                           valueState="None" class="sapUiSmallMarginBottom" submit="onQuotationSubmit"/>
+<!-- 
+                    <Label id="_IDGenLabel1" text="Item Number" required="true" design="Bold"></Label>
+                    <Input id="itemInput" placeholder="Enter or select item number" valueState="None" class="sapUiSmallMarginBottom"
+                    showValueHelp="true" valueHelpRequest=".onItemValueHelpRequest" submit="onItemQuotationSubmit"/> -->
+<!-- 
+                    <Label id="_IDGenLabel9" text="Category" required="true" design="Bold"/>
+                        <ComboBox id="categorySelect" placeholder="Select Category" items="{viewModel>/categories}"
+                                  selectionChange=".onCategoryChange" class="sapUiSmallMarginBottom">
+                            <core:Item id="_IDGenItem" key="{viewModel>key}" text="{viewModel>text}"/>
+                        </ComboBox> -->
+                      <Label id="_IDGenLabel9" text="Category" required="true" design="Bold"/>
+                        <TabContainer id="categoryTabs" items="{viewModel>/categories}" itemSelect=".onCategoryChange" class="sapUiSmallMarginBottom">
+                            <items>
+                                <TabContainerItem id="_IDGenTabItem" name="{viewModel>text}" key="{viewModel>key}"/>
+                            </items>
+                        </TabContainer>
+                                <!-- <Input id="vendorInput" showValueHelp="true" valueHelpRequest=".onValueVendorsHelpRequest"
+                                placeholder="Enter or select quotation number"
+                                valueState="None" class="sapUiSmallMarginBottom" /> -->
+<!-- 
+                                <Input id="descInput" showValueHelp="true" valueHelpRequest=".onValueDescHelpRequest"
+                                placeholder="Enter or select desc"
+                                valueState="None" class="sapUiSmallMarginBottom" submit="onDescInputSubmit" />
+                          -->
+                         
+
+<!--                         
+                        <ComboBox id="vendorSelect" placeholder="Select Vendor" items="{viewModel>/vendorOptions}"
+                                  selectionChange=".onCategoryChange" class="sapUiSmallMarginBottom">
+                            <core:Item id="_IDGenItem2" key="{viewModel>key}" text="{viewModel>text}"/>
+                        </ComboBox> -->
+
+                </form:content>
+            </form:SimpleForm>
+            
+            <Button id="_IDGenButton" text="Simulation" press=".onOpenSimulation" type="Emphasized" enabled="{viewModel>/simulateButtonEnabled}"
+                        class="sapUiSmallMarginTop customButtonStyle" />
+            <Button id="sendToERPButton" text="Send to ERP" press="onSendToERP" type="Emphasized" enabled="{viewModel>/simulateButtonEnabled}"
+                        class="sapUiSmallMarginTop customButtonStyle"/>
+
+
+
+        </content>
+          </Panel>
+
+          <IconTabBar id="myIconTabBar"
+    items="{QuotationItemsModel>/quotationItemsNumbers}"
+    select="onIconTabSelect"
+    class="sapUiResponsiveContentPadding">
+
+    <items>
+        <IconTabFilter id="_IDGenIconTabFilter"
+            key="{QuotationItemsModel>SalesQuotationItem}"
+            text="Item {QuotationItemsModel>SalesQuotationItem}_{QuotationItemsModel>Material}">
+        </IconTabFilter>
+    </items>
+
+   
+</IconTabBar>
+
+<table:Table id="serviceLinesTable" visible="true" width="auto" selectionMode="Single" class="sapUiSmallMarginTop"
+  busy="{viewModel>/tableBusy}" 
+                         busyIndicatorDelay="0">
+                        <table:columns>
+                        <table:Column id="_IDGenColumn1">
+                            <Label id="_IDGenLabel2" text="EXT Line"/>
+                            <table:template>
+                                <Text id="_IDGenText" text="{serviceModel>ExtLine}"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="_IDGenColumn2">
+                            <Label id="_IDGenLabel3" text="Short Text"/>
+                            <table:template>
+                                <Text id="_IDGenText1" text="{serviceModel>ShortText}"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="_IDGenColumn3">
+                            <Label id="_IDGenLabel4" text="Service ID"/>
+                            <table:template>
+                                <Text id="_IDGenText2" text="{serviceModel>Service}"/>
+                            </table:template>
+                        </table:Column>
+                       <table:Column id="_IDGenColumn8">
+    <Label id="_IDGenLabel1" text="Costing Model Type" />
+    <table:template>
+        <Text id="_IDGenText7" text="{serviceModel>CostingModelType}" />
+    </table:template>
+</table:Column>
+                        <table:Column id="_IDGenColumn4">
+                            <Label id="_IDGenLabel5" text="Quantity"/>
+                            <table:template>
+                                <Text id="_IDGenText3" text="{serviceModel>Quantity}"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="_IDGenColumn5">
+                            <Label id="_IDGenLabel6" text="UOM"/>
+                            <table:template>
+                                <Text id="_IDGenText4" text="{serviceModel>BaseUom}"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="_IDGenColumn6">
+                            <Label id="_IDGenLabel7" text="Gross Price"/>
+                            <table:template>
+                                <Text id="_IDGenText5" text="{serviceModel>GrPrice}"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="_IDGenColumn7">
+                            <Label id="_IDGenLabel8" text="Currency"/>
+                            <table:template>
+                                <Text id="_IDGenText6" text="{serviceModel>TransactionCurrency}"/>
+                            </table:template>
+                        </table:Column>
+                        <table:Column id="_IDGenColumn9">
+                            <Label id="_IDGenLabel11" text="Total Subcharge"/>
+                            <table:template>
+                                <Text id="_IDGenText8" text="{serviceModel>TotalSubCharges}"/>
+                            </table:template>
+                        </table:Column>
+                    </table:columns>
+                </table:Table>  
+
+    </Page>
+
+
+</mvc:View>
+
+

@@ -1,0 +1,1 @@
+using ZBTP_SRVSampleService as service from '../../srv/ZBTP_SRV';
